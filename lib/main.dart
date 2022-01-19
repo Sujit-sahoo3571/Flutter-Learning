@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Text("Hello World"),
+            title: const Text("Hello World"),
           ),
-          body: Center(
+          body: const Center(
             child: Text(
               "Hello World, Welcome To Flutter ",
               style: TextStyle(fontSize: 35.0),
