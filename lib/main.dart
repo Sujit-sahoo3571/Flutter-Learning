@@ -1,52 +1,40 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    const MaterialApp(
-      title: 'Flutter Tutorial',
-      home: TutorialHome(),
-    ),
-  );
-  
-}
-
-class TutorialHome extends StatelessWidget {
-  const TutorialHome({Key? key}) : super(key: key);
+class MyButton extends StatelessWidget {
+  const MyButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold is a layout for
-    // the major Material Components.
-    return Scaffold(
-      appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.menu),
-          tooltip: 'Navigation menu',
-          onPressed: null,
+    return GestureDetector(
+      onTap: () {
+        print('MyButton was tapped!');
+        print('tap again...\u{1f606}');
+        print(" \u{1f601} \u{1f602} \u{1f603} \u{1f604} \u{1f605}");
+      },
+      child: Container(
+        height: 50.0,
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.lightGreen[500],
         ),
-        title: const Text('Example title'),
-        actions: const [
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: 'Search',
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(Icons.car_rental_outlined),
-            tooltip: 'Search',
-            onPressed: null,
-          ),
-        ],
-      ),
-      // body is the majority of the screen.
-      body: const Center(
-        child: Text('Hello, world!'),
-      ),
-      floatingActionButton: const FloatingActionButton(
-        tooltip: 'Add', // used by assistive technologies
-        child: Icon(Icons.add),
-        onPressed: null,
+        child: const Center(
+          child: Text('Engage'),
+        ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: MyButton(),
+        ),
+      ),
+    ),
+  );
 }
