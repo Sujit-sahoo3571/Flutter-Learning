@@ -1,119 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(const MyApp());
+class MyAppBar extends StatelessWidget {
+  const MyAppBar({required this.title, Key? key}) : super(key: key);
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // Fields in a Widget subclass are always marked "final".
 
-  @override
-  Widget build(BuildContext context) {
-    
-    return  MaterialApp(
-        title: "Welcome Flutter",
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.green,
-          )
-        ),
-        home: const RandomWords());
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
-
-  @override
-  _RandomWordsState createState() => _RandomWordsState();
-}
-
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _saved = <WordPair>{};
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final Widget title;
 
   @override
   Widget build(BuildContext context) {
-    // final wordpair = WordPair.random();
-    // return Text(wordpair.asPascalCase);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Scroll Lists'),
-        actions: [
-          IconButton(
-            onPressed: _pushSaved,
-            icon: const Icon(Icons.list),
-            tooltip: 'Saved Suggestions',
-          )
+    return Container(
+      height: 56.0, // in logical pixels
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      decoration: BoxDecoration(color: Colors.blue[500]),
+      // Row is a horizontal, linear layout.
+      child: Row(
+        // <Widget> is the type of items in the list.
+        children: [
+          const IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Navigation menu',
+            onPressed: null, // null disables the button
+          ),
+          // Expanded expands its child
+          // to fill the available space.
+          Expanded(
+            child: title,
+          ),
+          const IconButton(
+            icon: Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: null,
+          ),
         ],
       ),
-      body: _buildSuggestions(),
     );
   }
+}
 
-  void _pushSaved() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      final tiles = _saved.map((pair) {
-        return ListTile(
-          title: Text(
-            pair.asPascalCase,
-            style: _biggerFont,
+class MyScaffold extends StatelessWidget {
+  const MyScaffold({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Material is a conceptual piece
+    // of paper on which the UI appears.
+    return Material(
+      // Column is a vertical, linear layout.
+      child: Column(
+        children: [
+          MyAppBar(
+            title: Text(
+              'Example title',
+              style: Theme.of(context) //
+                  .primaryTextTheme
+                  .headline6,
+            ),
           ),
-        );
-      });
-
-      final divided = tiles.isNotEmpty
-          ? ListTile.divideTiles(tiles: tiles, context: context).toList()
-          : <Widget>[];
-
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("suggestions "),
-        ),
-        body: ListView(
-          children: divided,
-        ),
-      );
-    }));
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return const Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final alreadySaved = _saved.contains(pair);
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
+          const Expanded(
+            child: Center(
+              child: Text('Hello, world!'),
+            ),
+          ),
+        ],
       ),
-      trailing: Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-        semanticLabel: alreadySaved ? "Remove from Save" : 'Save',
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
     );
   }
+}
+
+void main() {
+  runApp(
+    const MaterialApp(
+      title: 'My app', // used by the OS task switcher
+      home: SafeArea(
+        child: MyScaffold(),
+      ),
+    ),
+  );
 }
